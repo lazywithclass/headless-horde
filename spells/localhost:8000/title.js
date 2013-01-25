@@ -10,6 +10,5 @@ module.exports = function (instance, cb) {
 
   instance.visit('/tests/fixtures/sample-site.html', function () {
     expectation(instance.text('title'), cb);
-
   });
 };
