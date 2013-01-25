@@ -19,7 +19,7 @@
         });
       }).seq_(function(next) {
         return request(app).post('/horde').send({
-          url: 'http://google.com'
+          url: 'http://localhost:8000'
         }).expect('Content-Type', /json/, done).end(next);
       }).seq_(function(next) {
         return request(app).get('/horde/alive').end(function(err, res) {

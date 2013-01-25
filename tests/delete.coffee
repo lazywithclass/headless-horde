@@ -13,7 +13,7 @@ describe 'DELETE /horde', ->
         request(app).del('/horde').end(-> next())
       ).seq_((next) ->
         request(app).post('/horde')
-          .send({url: 'http://google.com'})
+          .send({url: 'http://localhost:8000'})
           .expect('Content-Type', /json/, done)
           .end next
       ).seq_((next) ->

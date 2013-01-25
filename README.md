@@ -17,6 +17,8 @@ There isn't documentation, if you want to know more have a look at the tests.
 
 ## Ideas and nice to have stuff
 
+ * make all tests run on the localhost http server, with the page specified in the fixtures
+
  * what about using https://github.com/caolan/async instead of Seq? It seems to have a clener API
 
  * what about replacing underscore with lodash? Why?

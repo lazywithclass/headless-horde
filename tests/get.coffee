@@ -21,7 +21,7 @@ describe 'GET', ->
         .seq_((next) ->
           request(app)
             .post('/horde')
-            .send({ url: 'http://google.com'})
+            .send({ url: 'http://localhost:8000'})
             .end next
         ).seq_((next) ->
           request(app).get('/horde').end (err, res) ->
@@ -37,17 +37,18 @@ describe 'GET', ->
 
     it 'returns a given instance', (done) ->
       guid = ''
+      started = new Date().getTime()
       Seq()
         .seq_((next) ->
           request(app)
             .post('/horde')
-            .send({ url: 'http://stackoverflow.com'})
+            .send({ url: 'http://localhost:8000'})
             .end (err, res) ->
               guid = JSON.parse(res.text).created.guid
               next()
         ).seq_((next) ->
           request(app).get("/horde/#{guid}").end (err, res) ->
-            JSON.parse(res.text).url.should.equal 'http://stackoverflow.com/'
+            JSON.parse(res.text).url.should.equal 'http://localhost:8000/'
             done()
         )
 
@@ -58,7 +59,7 @@ describe 'GET', ->
         .seq_((next) ->
           request(app)
             .post('/horde')
-            .send({ url: 'http://google.com'})
+            .send({ url: 'http://localhost:8000'})
             .end next
         ).seq_((next) ->
           request(app).get('/horde/alive').end (err, res) ->
@@ -71,9 +72,9 @@ describe 'GET', ->
     it 'returns the available spells for a site', (done) ->
 
       request(app)
-        .get('/spells/stackoverflow.com')
+        .get('/spells/localhost:8000')
         .expect(200)
         .end (err, res) ->
           spells = JSON.parse(res.text)
-          spells[0].should.have.property 'name', 'questions.js'
+          spells[0].should.have.property 'name', 'title.js'
           done()

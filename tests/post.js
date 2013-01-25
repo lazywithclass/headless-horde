@@ -16,7 +16,7 @@
     });
     it('responds with 201 on success', function(done) {
       return request(app).post('/horde').send({
-        url: 'http://google.com'
+        url: 'http://localhost:8000'
       }).expect(201, done);
     });
     it('responds with 412 without url', function(done) {
@@ -24,13 +24,13 @@
     });
     it('responds with json', function(done) {
       return request(app).post('/horde').send({
-        url: 'http://google.com'
+        url: 'http://localhost:8000'
       }).expect('Content-Type', /json/, done);
     });
     it('creates an instance', function(done) {
       return Seq().seq_(function(next) {
         return request(app).post('/horde').send({
-          url: 'http://google.com'
+          url: 'http://localhost:8000'
         }).expect(201).end(next);
       }).seq_(function(next) {
         return request(app).get('/horde/alive').end(function(err, res) {
@@ -41,7 +41,7 @@
     });
     it('creates an instance returning the new one', function(done) {
       return request(app).post('/horde').send({
-        url: 'http://google.com'
+        url: 'http://localhost:8000'
       }).expect(201).end(function(err, res) {
         var data;
         data = JSON.parse(res.text);
@@ -53,7 +53,7 @@
     });
     return it('creates an instance returning the horde', function(done) {
       return request(app).post('/horde').send({
-        url: 'http://google.com'
+        url: 'http://localhost:8000'
       }).expect(201).end(function(err, res) {
         var data;
         data = JSON.parse(res.text);

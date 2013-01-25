@@ -19,13 +19,13 @@
         guid = '';
         return Seq().seq_(function(next) {
           return request(app).post('/horde').send({
-            url: 'http://stackoverflow.com'
+            url: 'http://localhost:8000'
           }).end(function(err, res) {
             guid = JSON.parse(res.text).created.guid;
             return next();
           });
         }).seq_(function(next) {
-          return request(app).get('/spells/stackoverflow.com').end(function(err, res) {
+          return request(app).get('/spells/localhost:8000').end(function(err, res) {
             spell = JSON.parse(res.text)[0].name;
             return next();
           });

@@ -8,19 +8,19 @@ describe 'POST /horde', ->
     afterEach (done) -> request(app).del('/horde').end done
 
     it 'responds with 201 on success', (done) ->
-      request(app).post('/horde').send({ url: 'http://google.com'}).expect(201, done)
+      request(app).post('/horde').send({ url: 'http://localhost:8000'}).expect(201, done)
 
     it 'responds with 412 without url', (done) ->
       request(app).post('/horde').send({}).expect(412, done)
 
     it 'responds with json', (done) ->
-      request(app).post('/horde').send({ url: 'http://google.com'}).expect('Content-Type', /json/, done)
+      request(app).post('/horde').send({ url: 'http://localhost:8000'}).expect('Content-Type', /json/, done)
 
     it 'creates an instance', (done) ->
       Seq()
       .seq_((next) ->
         request(app).post('/horde')
-          .send({ url: 'http://google.com'})
+          .send({ url: 'http://localhost:8000'})
           .expect(201)
           .end next
       ).seq_((next) ->
@@ -31,7 +31,7 @@ describe 'POST /horde', ->
 
     it 'creates an instance returning the new one', (done) ->
       request(app).post('/horde')
-        .send({url: 'http://google.com'})
+        .send({url: 'http://localhost:8000'})
         .expect(201)
         .end (err, res) ->
           data = JSON.parse(res.text)
@@ -42,7 +42,7 @@ describe 'POST /horde', ->
 
     it 'creates an instance returning the horde', (done) ->
       request(app).post('/horde')
-        .send({url: 'http://google.com'})
+        .send({url: 'http://localhost:8000'})
         .expect(201)
         .end (err, res) ->
           data = JSON.parse(res.text)

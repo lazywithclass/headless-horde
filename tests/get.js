@@ -26,7 +26,7 @@
       it('returns an array of instances', function(done) {
         return Seq().seq_(function(next) {
           return request(app).post('/horde').send({
-            url: 'http://google.com'
+            url: 'http://localhost:8000'
           }).end(next);
         }).seq_(function(next) {
           return request(app).get('/horde').end(function(err, res) {
@@ -43,18 +43,19 @@
         return request(app).get('/horde/h725').expect(404, done);
       });
       return it('returns a given instance', function(done) {
-        var guid;
+        var guid, started;
         guid = '';
+        started = new Date().getTime();
         return Seq().seq_(function(next) {
           return request(app).post('/horde').send({
-            url: 'http://stackoverflow.com'
+            url: 'http://localhost:8000'
           }).end(function(err, res) {
             guid = JSON.parse(res.text).created.guid;
             return next();
           });
         }).seq_(function(next) {
           return request(app).get("/horde/" + guid).end(function(err, res) {
-            JSON.parse(res.text).url.should.equal('http://stackoverflow.com/');
+            JSON.parse(res.text).url.should.equal('http://localhost:8000/');
             return done();
           });
         });
@@ -64,7 +65,7 @@
       return it('returns the number of alive members in the horde', function(done) {
         return Seq().seq_(function(next) {
           return request(app).post('/horde').send({
-            url: 'http://google.com'
+            url: 'http://localhost:8000'
           }).end(next);
         }).seq_(function(next) {
           return request(app).get('/horde/alive').end(function(err, res) {
@@ -76,10 +77,10 @@
     });
     return describe('/spells/:site', function() {
       return it('returns the available spells for a site', function(done) {
-        return request(app).get('/spells/stackoverflow.com').expect(200).end(function(err, res) {
+        return request(app).get('/spells/localhost:8000').expect(200).end(function(err, res) {
           var spells;
           spells = JSON.parse(res.text);
-          spells[0].should.have.property('name', 'questions.js');
+          spells[0].should.have.property('name', 'title.js');
           return done();
         });
       });

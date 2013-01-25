@@ -14,13 +14,13 @@ describe 'PUT', ->
       Seq()
         .seq_((next) ->
           request(app).post('/horde')
-            .send({ url: 'http://stackoverflow.com'})
+            .send({ url: 'http://localhost:8000'})
             .end (err, res) ->
               guid = JSON.parse(res.text).created.guid
               next()
         ).seq_((next) ->
           request(app)
-            .get('/spells/stackoverflow.com')
+            .get('/spells/localhost:8000')
             .end (err, res) ->
               spell = JSON.parse(res.text)[0].name
               next()
