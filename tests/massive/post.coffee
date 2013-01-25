@@ -25,11 +25,14 @@ describe 'POST', ->
         ).seq_((next) ->
           request(app).get('/horde/alive').end (err, res) ->
             JSON.parse(res.text).tot.should.equal 0
-            console.log 'horde deleted'
             next()
         ).seq_((next) ->
-          _.times n, (i, a) ->
-            request(app).post('/horde').end ->
-              console.log "created #{i}th instance"
-              if i is n - 1 then done()
+          _.times n, (i) ->
+            request(app)
+              .post('/horde')
+              .send({url: 'http://localhost:8000'})
+              .expect(201)
+              .end ->
+                console.log "created #{i}th instance"
+                if i is n - 1 then done()
         )

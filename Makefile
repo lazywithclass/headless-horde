@@ -20,4 +20,4 @@ test-post:
 	./node_modules/.bin/mocha -r should -t 20000 --reporter spec tests/post.js
 
 massive:
-	./node_modules/.bin/mocha -r should -t 10000 tests/massive
+	./node_modules/.bin/mocha -r should -t 20000 tests/massive

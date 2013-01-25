@@ -30,12 +30,13 @@
         }).seq_(function(next) {
           return request(app).get('/horde/alive').end(function(err, res) {
             JSON.parse(res.text).tot.should.equal(0);
-            console.log('horde deleted');
             return next();
           });
         }).seq_(function(next) {
-          return _.times(n, function(i, a) {
-            return request(app).post('/horde').end(function() {
+          return _.times(n, function(i) {
+            return request(app).post('/horde').send({
+              url: 'http://localhost:8000'
+            }).expect(201).end(function() {
               console.log("created " + i + "th instance");
               if (i === n - 1) {
                 return done();
