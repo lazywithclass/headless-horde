@@ -1,3 +1,3 @@
 #!/bin/bash
 
-kill -9 $(lsof -ti :8000)
+kill -9 $(cat ./server.pid) && rm ./server.pid
