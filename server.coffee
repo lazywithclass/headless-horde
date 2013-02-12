@@ -1,14 +1,13 @@
 express = require 'express'
-Browser = require 'zombie'
+wd = require 'wd'
 uuid = require 'node-uuid'
 _ = require 'underscore'
 info = require './package'
+exec = require('child_process').exec
 
 app = express()
 # exporting so it could be seen from tests, is there a better alternative?
 module.exports = app
-
-app.use(express.bodyParser());
 
 app.configure ->
   app.use express.bodyParser()
@@ -22,11 +21,11 @@ app.all '/*', (req, res, next) ->
   next()
 
 instances = {}
-port = 9000
+webdriverPort = 9200
 
 extract = (instance) ->
   guid: instance.guid
-  url: instance.window.location.href
+  url: instance.url
 
 app.post '/horde', (req, res) ->
   if not req.body.url
@@ -34,21 +33,23 @@ app.post '/horde', (req, res) ->
       'message': 'url missing'
     return
   guid = uuid.v4()
-  browser = new Browser
-  browser.guid = guid
-  instances[guid] = browser
-  browser.visit req.body.url, (error, browser, statusCode, errors) ->
-    res.json 201,
-      'created':
-        extract browser
-      'horde': (extract i for i in _.toArray instances)
-
-app.get '/horde/alive', (req, res) ->
-  res.json
-    tot: Object.keys(instances).length
+  exec "phantomjs --webdriver=#{webdriverPort}", (err, stdout, stderr) ->
+    instance = wd.remote '127.0.0.1', webdriverPort
+    instance.init ->
+      instance.guid = guid
+      instance.url = req.body.url
+      instances[guid] = instance
+      instance.get req.body.url, ->
+        res.json
+          'created':
+            extract instance
+          'horde': (extract i for i in _.toArray instances)
 
 app.get '/horde', (req, res) ->
   res.json (extract i for i in _.toArray instances)
+
+app.get '/horde/alive', (req, res) ->
+  res.json tot: Object.keys(instances).length
 
 app.get '/horde/:guid', (req, res) ->
   instance = instances[req.params.guid]
@@ -57,7 +58,7 @@ app.get '/horde/:guid', (req, res) ->
       result: 'error'
       message: "instance #{req.params.guid} doesn't exist"
   else
-    res.json 200, url: instance.location.href
+    res.json 200, url: instance.url
 
 app.delete '/horde', (req, res) ->
   for key in Object.keys(instances)

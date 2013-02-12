@@ -48,7 +48,7 @@
         started = new Date().getTime();
         return Seq().seq_(function(next) {
           return request(app).post('/horde').send({
-            url: 'http://localhost:8000'
+            url: 'http://localhost:8000/'
           }).end(function(err, res) {
             guid = JSON.parse(res.text).created.guid;
             return next();

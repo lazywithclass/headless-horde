@@ -42,7 +42,7 @@ describe 'GET', ->
         .seq_((next) ->
           request(app)
             .post('/horde')
-            .send({ url: 'http://localhost:8000'})
+            .send({ url: 'http://localhost:8000/'})
             .end (err, res) ->
               guid = JSON.parse(res.text).created.guid
               next()
