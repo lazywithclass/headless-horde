@@ -40,10 +40,11 @@ app.post '/horde', (req, res) ->
       instance.url = req.body.url
       instances[guid] = instance
       instance.get req.body.url, ->
-        res.json
+        payload =
           'created':
             extract instance
           'horde': (extract i for i in _.toArray instances)
+        res.json 201, payload
 
 app.get '/horde', (req, res) ->
   res.json (extract i for i in _.toArray instances)

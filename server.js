@@ -59,8 +59,8 @@
         instance.url = req.body.url;
         instances[guid] = instance;
         return instance.get(req.body.url, function() {
-          var i;
-          return res.json({
+          var i, payload;
+          payload = {
             'created': extract(instance),
             'horde': (function() {
               var _i, _len, _ref, _results;
@@ -72,7 +72,8 @@
               }
               return _results;
             })()
-          });
+          };
+          return res.json(201, payload);
         });
       });
     });
