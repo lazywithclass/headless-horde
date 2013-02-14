@@ -2,8 +2,6 @@
 (function() {
 
   describe('spells', function() {
-    var Browser;
-    Browser = require('zombie');
     it('could be invoked', function(done) {
       return require('./fixtures/spells/simple')(function(data) {
         data.should.equal('done');
@@ -11,15 +9,25 @@
       });
     });
     it('could get the title', function(done) {
-      return require('./fixtures/spells/open-url')(new Browser, function(data) {
-        data.should.equal('Sample site');
-        return done();
+      return require('child_process').exec('phantomjs --webdriver=9200', function(err, stdout, stderr) {
+        var instance;
+        instance = require('wd').remote('127.0.0.1', 9200);
+        return instance.init(function() {
+          return require('./fixtures/spells/open-url')(instance, function(data) {
+            data.should.equal('Sample site');
+            return done();
+          });
+        });
       });
     });
     return it('could write a custom string in a field', function(done) {
-      return require('./fixtures/spells/fill-field')(new Browser, function(data) {
-        data.should.equal('sample string');
-        return done();
+      return require('child_process').exec('phantomjs --webdriver=9201', function(err, stdout, stderr) {
+        var instance;
+        instance = require('wd').promiseRemote('127.0.0.1', 9201);
+        return require('./fixtures/spells/fill-field')(instance, function(data) {
+          data.should.equal('sample string');
+          return done();
+        });
       });
     });
   });
