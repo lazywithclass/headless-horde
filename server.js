@@ -152,7 +152,7 @@
     var cb, guid, instance, spell, url;
     guid = req.params.guid;
     instance = instances[guid];
-    url = instance.window.location.href.replace('http://', '');
+    url = instance.url.replace('http://', '');
     if (url.indexOf('/') !== -1) {
       url = url.substring(0, url.lastIndexOf('/'));
     }

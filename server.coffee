@@ -77,7 +77,7 @@ app.get '/spells/:site', (req, res) ->
 app.put '/horde/:guid/spells/:spell', (req, res) ->
   guid = req.params.guid
   instance = instances[guid]
-  url = instance.window.location.href.replace('http://', '')
+  url = instance.url.replace('http://', '')
   if url.indexOf('/') isnt -1
     url = url.substring(0, url.lastIndexOf('/'))
   spell = require "./spells/#{url}/#{req.params.spell}"
