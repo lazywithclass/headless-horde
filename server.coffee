@@ -34,7 +34,7 @@ app.post '/horde', (req, res) ->
     return
   guid = uuid.v4()
   exec "phantomjs --webdriver=#{webdriverPort}", (err, stdout, stderr) ->
-    instance = wd.remote '127.0.0.1', webdriverPort
+    instance = wd.promiseRemote '127.0.0.1', webdriverPort
     instance.init ->
       instance.guid = guid
       instance.url = req.body.url

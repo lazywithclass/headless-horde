@@ -53,7 +53,7 @@
     guid = uuid.v4();
     return exec("phantomjs --webdriver=" + webdriverPort, function(err, stdout, stderr) {
       var instance;
-      instance = wd.remote('127.0.0.1', webdriverPort);
+      instance = wd.promiseRemote('127.0.0.1', webdriverPort);
       return instance.init(function() {
         instance.guid = guid;
         instance.url = req.body.url;

@@ -8,9 +8,11 @@ var expectation = function (found, cb) {
 module.exports = function (instance, cb) {
   'use strict';
 
-  instance.get('http://localhost:8000/tests/fixtures/sample-site.html', function () {
-    instance.title(function(err, title) {
+  instance.get('http://localhost:8000/tests/fixtures/sample-site.html')
+    .then(function () {
+      return instance.title();
+    })
+    .then(function (title) {
       expectation(title, cb);
     });
-  });
 };
