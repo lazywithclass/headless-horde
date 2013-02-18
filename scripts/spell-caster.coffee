@@ -16,4 +16,7 @@ exec 'phantomjs --webdriver=9200', (err, stdout, stderr) ->
   instance.init ->
     spell = require "../spells/#{hostname}/#{spellName}"
     spell instance, (success, found, expected) ->
-      console.log "result is #{success}, you sent\n#{found}\nand I expected\n#{expected}"
+      if success
+        console.log '✔'
+      else
+        console.log "✖ expected '#{expected}' but found '#{found}'"

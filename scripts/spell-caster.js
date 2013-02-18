@@ -21,7 +21,11 @@
       var spell;
       spell = require("../spells/" + hostname + "/" + spellName);
       return spell(instance, function(success, found, expected) {
-        return console.log("result is " + success + ", you sent\n" + found + "\nand I expected\n" + expected);
+        if (success) {
+          return console.log('✔');
+        } else {
+          return console.log("✖ expected '" + expected + "' but found '" + found + "'");
+        }
       });
     });
   });
