@@ -1,12 +1,19 @@
 # purpose of this is to cast spells on the fly
 
-Browser = require 'zombie'
+wd = require 'wd'
+exec = require('child_process').exec
+argv = require('optimist')
+  .usage('Usage: $0 -n name')
+  .demand('n')
+  .argv
+
 url = 'http://localhost:8000'
 hostname = 'localhost:8000'
-spellName = 'title.js'
+spellName = argv.n
 
-browser = new Browser
-browser.visit url, (error, browser, statusCode, errors) ->
-  spell = require "../spells/#{hostname}/#{spellName}"
-  spell browser, (result, found, expected) ->
-    console.log "result is #{result}, you sent\n#{found}\nand I expected\n#{expected}"
+exec 'phantomjs --webdriver=9200', (err, stdout, stderr) ->
+  instance = wd.promiseRemote '127.0.0.1', 9200
+  instance.init ->
+    spell = require "../spells/#{hostname}/#{spellName}"
+    spell instance, (success, found, expected) ->
+      console.log "result is #{success}, you sent\n#{found}\nand I expected\n#{expected}"
