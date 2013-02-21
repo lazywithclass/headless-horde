@@ -9,6 +9,9 @@
 # it can be passed in as a string (e.g.: "1 == 1" or "$('#bar').is(':visible')" or
 # as a callback function.
 # @param timeOutMillis the max amount of time to wait. If not specified, 3 sec is used.
+#
+# Took this from https://github.com/ariya/phantomjs/blob/master/examples/waitfor.coffee
+# All credit goes there
 ##
 waitFor = (testFx, onReady, timeOutMillis=3000) ->
   start = new Date().getTime()
