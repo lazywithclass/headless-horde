@@ -2,8 +2,7 @@
 
 ## Update
 
-When I wrote this I did not know about [PhantomJS](http://phantomjs.org/release-1.8.html) webdriver support.
-So this should be updated to use the features offered by that PhantomJS release.
+When I wrote this I did not know about [PhantomJS](http://phantomjs.org/release-1.8.html) webdriver support, so this is not anymore something useful I wish to work on.
 
 ## Description
 
